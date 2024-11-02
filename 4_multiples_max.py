@@ -1,83 +1,44 @@
+import heapq
 
-res =[]
+arr = [-3, -3, -3, -3, 4, 4, 4, 5]
 
-first_max = -0.0001
-second_max = -0.0001
-third_max = -0.0001
-fourth_max = -0.0001
+# Edge case: if the array has fewer than 4 elements
+if len(arr) < 4:
+    print("Array must have at least 4 elements.")
+else:
+    # Get the four largest and four smallest values
+    largest = heapq.nlargest(4, arr)
+    smallest = heapq.nsmallest(4, arr)
 
-first_min = 0.0001
-second_min = 0.0001
-third_min = 0.0001
-fourth_min = 0.0001
+    # Calculate the products
+    products = []
 
-for i in range(len(arr)):
-  if arr[i]>first_max and len(arr) >= 1:
-    fourth_max = third_max
-    third_max = second_max
-    second_max = first_max
-    first_max = arr[i]
-    index = i
+    # Product of the two largest positive numbers
+    if len(largest) >= 2 and largest[1] > 0:
+        products.append(largest[0] * largest[1])
 
-  if arr[i]<=first_max and arr[i] > second_max and index != i:
-    fourth_max = third_max
-    third_max = second_max
-    second_max = arr[i]
-    index = i
+    # Product of the two smallest negative numbers
+    if len(smallest) >= 2 and smallest[1] < 0:
+        products.append(smallest[0] * smallest[1])
 
-  if arr[i] <= second_max and arr[i] > third_max and index != i:
-    fourth_max = third_max
-    third_max = arr[i]
-    index = i
+    # Product of the three largest numbers
+    if len(largest) >= 3:
+        products.append(largest[0] * largest[1] * largest[2])
 
-  if arr[i] <= third_max and arr[i] > fourth_max and index != i:
-    fourth_max = arr[i]
+    # Product of the four largest numbers
+    if len(largest) >= 4:
+        products.append(largest[0] * largest[1] * largest[2] * largest[3])
 
-  if arr[i] < first_min:
-    fourth_min = third_min
-    third_min = second_min
-    second_min = first_min
-    first_min = arr[i]
-    index = i
+    # Product of the three smallest numbers
+    if len(smallest) >= 3:
+        products.append(smallest[0] * smallest[1] * smallest[2])
 
-  if arr[i] >= first_min and arr[i] < second_min and index != i:
-    fourth_min = third_min
-    third_min = second_min
-    second_min = arr[i]
-    index = i
+    # Product of the four smallest numbers
+    if len(smallest) >= 4:
+        products.append(smallest[0] * smallest[1] * smallest[2] * smallest[3])
 
-  if arr[i] >= second_min and arr[i] < third_min and index != i:
-    fourth_min = third_min
-    third_min = arr[i]
-    index = i
-
-  if arr[i] >= third_min and arr[i] < fourth_min and index != i:
-    fourth_min = arr[i]
-
-if first_min != 0.0001 and second_min != 0.0001\
- and first_max != -0.0001 and second_max != -0.0001:
-  biggest_positive_pair = first_max*second_max
-  biggest_negative_pair = first_min*second_min
-  res.append(biggest_positive_pair*biggest_negative_pair)
-
-if first_max != -0.0001 and first_min != 0.0001\
- and second_min != 0.0001 and third_min != 0.0001:
-  biggest_negative_three = first_max*first_min*second_min*third_min
-  res.append(biggest_negative_three)
-
-if first_min != 0.0001 and first_max != -0.0001\
- and second_max != -0.0001 and third_max != -0.0001:
-  biggest_positive_three = first_min*first_max*second_max*third_max
-  res.append(biggest_positive_three)
-
-if first_max != -0.0001 and second_max != -0.0001\
- and third_max != -0.0001 and fourth_max != -0.0001:
-  biggest_positive_quarter = first_max*second_max*third_max*fourth_max
-  res.append(biggest_positive_quarter)
-
-if first_min != 0.0001 and second_min != 0.0001\
- and third_min != 0.0001 and fourth_min != 0.0001:
-  biggest_positive_quarter = first_min*second_min*third_min*fourth_min
-  res.append(biggest_positive_quarter)
-
-print(max(res))
+    # Get the maximum product
+    if products:
+        print(max(products))
+    else:
+        print("No valid products found.")
